@@ -52,7 +52,7 @@ def print_children(WholeText, WholeTextEnd, root, path):
         <node POSITION="right" TEXT="<File_Name>"/>\n
     """
     endText = ""
-    newText = """<node TEXT="{0}" """.format((root.dirOrFile.replace("&", "...")))
+    newText = """<node TEXT="{0}" """.format((root.dirOrFile.replace("&", "&amp;")))
 
     if root.children:
         # if the root is a directory
@@ -65,6 +65,8 @@ def print_children(WholeText, WholeTextEnd, root, path):
         # if the root is a file
 
         WholeText = WholeText + newText
+        path = os.path.join(path)
+        path = path.replace("&", "&amp;")
         WholeText += ' LINK="{link}"/>\n'.format(link=path)
 
     return WholeText, WholeTextEnd
