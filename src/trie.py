@@ -11,6 +11,35 @@ class TrieNode(object):
         self.counter = 1
 
 
+def colour_map(argu):
+    """
+
+    :param argu: string, the filename to examine for colour
+    :return: tuple( node colour , node background colour)
+    """
+
+    COLOUR_MAP = {
+        'xlsx' : ("#33ff33", "#4f844e"),
+        'xls' : ("#33ff33", "#4f844e"),
+        'docx' : ("#33ff33", "#4c82ce"),
+        'doc' : ("#33ff33", "#4c82ce"),
+        'dwg' : ("#33ff33", "#bcb662"),
+        'pdf' : ("#33ff33", "#ea6464"),
+        'jpg': ("#33ff33", "#d06df2"),
+        'png': ("#33ff33", "#b058ce"),
+        'js': ("#33ff33", "#891876"),
+        'html': ("#33ff33", "#891876"),
+        'css': ("#33ff33", "#891876"),
+        'mp4': ("#33ff33", "#777777"),
+        'mpg': ("#33ff33", "#777777"),
+        'avi': ("#33ff33", "#777777"),
+        'mpeg': ("#33ff33", "#777777"),
+        'nef': ("#33ff33", "#777777"),
+        'gif': ("#33ff33", "#777777"),
+    }
+    colours = COLOUR_MAP.get(argu.split('.')[-1], ("#33ff33", "#777777"))
+    return colours
+
 def add(root, word: str):
     node = root
     for dirOrFile in word._parts:
@@ -65,9 +94,11 @@ def print_children(WholeText, WholeTextEnd, root, path):
         # if the root is a file
 
         WholeText = WholeText + newText
-        path = os.path.join(path)
-        path = path.replace("&", "&amp;")
-        WholeText += ' LINK="{link}"/>\n'.format(link=path)
+        colours = colour_map(root.dirOrFile)
+        WholeText += 'COLOR="{0}" BACKGROUND_COLOR="{1}"'.format(colours[0], colours[1])
+        link = ' LINK="{link}"/>\n'.format(link=path)
+        link = link.replace("&", "&amp;")
+        WholeText += link
 
     return WholeText, WholeTextEnd
 
